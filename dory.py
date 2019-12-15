@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 # Dory project
 
-from config/msgterm import MsgTerm
-from config/configurize import Configurize
+from config import MsgTerm
+from config import Configurize
 
 
 class Dory:
