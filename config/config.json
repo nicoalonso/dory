@@ -1,0 +1,12 @@
+{
+    "calendar": {
+        "user": "",
+        "password": "",
+        "event_name": ""
+    },
+    "odoo": {
+        "endpoint": "",
+        "user": "",
+        "password": ""
+    }
+}

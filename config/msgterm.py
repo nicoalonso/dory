@@ -1,31 +1,35 @@
 #!/usr/bin/python3
 # Show messages on the terminal
 
-from termcolor import colored
+from termcolor import colored, cprint
 
 # Message in Terminal
 class MsgTerm:
 
     # Type messages constants
-    TEXT     = 0
-    DEBUG    = 1
-    INFO     = 2
+    DEBUG    = 0
+    INFO     = 1
+    TEXT     = 2
     SUCCESS  = 3
     WARNING  = 4
     ALERT    = 5
     ERROR    = 6
     FATAL    = 7
     # Message colors
-    COLORS   = ['white', 'grey', 'blue', 'green', 'yellow', 'cyan', 'red', 'magenta']
-    LABELS   = [' ', '-', 'i', '+', 'w', '*', '!', '!!']
+    COLORS   = ['grey', 'blue', 'white', 'green', 'yellow', 'cyan', 'red', 'magenta']
+    LABELS   = ['-', 'i', ' ', '+', 'w', '*', '!', '!!']
+
+    # Verbose level, default: hide debug messages
+    verbose_level = 1
 
     # Constructor
     def __init__(self, msg, **kwargs):
         self.type = self.TEXT
         self.label = None
-        self.separation = False
         self.bold = False
         self.reverse = False
+        self.hr = False
+        self.paragraph = False
         self.msgs = []
 
         if isinstance(msg, list) or isinstance(msg, tuple):
@@ -39,20 +43,22 @@ class MsgTerm:
             if hasattr(self, key):
                 setattr(self, key, kwargs[key])
             else:
-                if key == 'sep':
-                    self.separation = kwargs['sep']
+                if key == 'par':
+                    self.paragraph = kwargs['par']
+                elif key == 'p':
+                    self.paragraph = kwargs['p']
                 elif key == 'lbl':
                     self.label = kwargs['lbl']
 
-        if self.type < self.TEXT:
-            self.type = self.TEXT
+        if self.type < self.DEBUG:
+            self.type = self.DEBUG
         elif self.type > self.FATAL:
             self.type = self.FATAL
 
     # Print message on the terminal
     def show(self):
-        if self.separation:
-            print('')
+        if self.type < self.verbose_level:
+            return
 
         color = self.COLORS[ self.type ]
         attrs = []
@@ -61,6 +67,13 @@ class MsgTerm:
         if self.reverse:
             attrs.append('reverse')
 
+        # Print line to separate text
+        if self.hr:
+            cprint('\n -- \n', color, attrs=['bold'])
+        elif self.paragraph:
+            print('')
+
+        # Message
         box = ''
         if self.label:
             box = colored('[%s]', color) % self.label
@@ -72,7 +85,7 @@ class MsgTerm:
             else:
                 print(text)
 
-        if self.separation:
+        if self.paragraph:
             print('')
 
     # Transform to string
@@ -81,6 +94,10 @@ class MsgTerm:
 
     # Static methods
     
+    @staticmethod
+    def verbosity(level):
+        MsgTerm.verbose_level = level
+
     # Generic
     @staticmethod
     def message(msg, **kwargs):
@@ -108,6 +125,7 @@ class MsgTerm:
     @staticmethod
     def info(msg, **kwargs):
         kwargs['type'] = MsgTerm.INFO
+        kwargs['bold'] = True
         if not ('label' in kwargs or 'lbl' in kwargs):
             kwargs['label'] = MsgTerm.LABELS[MsgTerm.INFO]
 
@@ -156,7 +174,16 @@ class MsgTerm:
         kwargs['type'] = MsgTerm.FATAL
         kwargs['bold'] = True
         kwargs['sep'] = True
+        kwargs['hr'] = True
+        kwargs['paragraph'] = True
         kwargs['reverse'] = True
+
+        if isinstance(msg, tuple):
+            msg = list(msg)
+        if isinstance(msg, list):
+            msg.insert(0, '[ Fatal Error ]')
+        else:
+            msg = ['[ Fatal Error ]', msg]
 
         if not ('label' in kwargs or 'lbl' in kwargs):
             kwargs['label'] = MsgTerm.LABELS[MsgTerm.FATAL]
@@ -166,12 +193,18 @@ class MsgTerm:
 
 # Text messages and colors
 if __name__ == '__main__':
+    MsgTerm.verbosity(MsgTerm.DEBUG)  # Set level of verbosity
     MsgTerm.message('Text messages')
-    MsgTerm.text('text')
     MsgTerm.debug('debug')
     MsgTerm.info('info')
+    MsgTerm.text('text')
     MsgTerm.success('success')
     MsgTerm.warning('warning')
     MsgTerm.alert('alert')
     MsgTerm.error('error')
     MsgTerm.fatal('fatal')
+
+    # Printa a list of messages in paragraph style
+    MsgTerm.message('Paragraph Style', label='#', bold=True, hr=True, type=MsgTerm.SUCCESS)
+    msgs = ['This is a message', 'that to show in multiple lines', 'like as a paragraph style']
+    MsgTerm.message(msgs, paragraph=True, label=' ', bold=True, type=MsgTerm.INFO)
