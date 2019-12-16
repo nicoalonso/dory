@@ -22,7 +22,8 @@ class Configurize:
     def __init__(self, project, filename='config'):
         self.project = project
         self.filename = filename + '.json'
-        self.filepath = ''
+        self.configFolder = None
+        self.filepath = None
         self.config = {}
 
     # Get the home config file path
@@ -33,14 +34,14 @@ class Configurize:
             folder.mkdir()
             MsgTerm.debug('[Config] create folder %s' % str(folder))
 
-        projectFolder = folder / self.project
+        self.configFolder = folder / self.project
         # Create project folder if not exists
-        if not projectFolder.exists():
-            projectFolder.mkdir()
-            MsgTerm.debug('[Config] create folder %s' % str(projectFolder))
+        if not self.configFolder.exists():
+            self.configFolder.mkdir()
+            MsgTerm.debug('[Config] create folder %s' % str(self.configFolder))
 
         # Config file path
-        self.filepath = projectFolder / self.filename
+        self.filepath = self.configFolder / self.filename
 
     # Load project config
     # 

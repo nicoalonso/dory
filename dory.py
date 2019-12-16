@@ -6,9 +6,13 @@ from argparse import ArgumentParser
 
 from config import MsgTerm
 from config import Configurize
+from calendars import CalendarBase, GoogleCalendar
 
+
+# Version
 VERSION='v0.1'
 
+# App class
 class Dory:
 
     # Constructor
@@ -33,7 +37,7 @@ class Dory:
 
     # Configure
     def config(self):
-        if self.args.config == 'list':
+        if self.args.config.lower() == 'list':
             MsgTerm.info('Show config file:', par=True)
             self.cfg.display()
             return True
@@ -56,9 +60,22 @@ class Dory:
         MsgTerm.fatal("Expected: 'section.name=value' or 'list'")
         return False
 
+    # Get Calendar
+    def getCalendar(self):
+        typeCalendar = self.cfg.get('calendar', 'type', None)
+        if typeCalendar == 'google':
+            self.cal = GoogleCalendar(self.cfg)
+        else:
+            self.cal = Calendar(self.cfg)
+
     # Calendar
-    def calendar(self):
-        pass
+    def cmdCalendar(self):
+        self.getCalendar()
+
+        if self.args.calendar.lower() == 'check':
+            result = self.cal.check()
+
+        return result
 
     # Execute application
     def run(self):
@@ -75,10 +92,11 @@ class Dory:
             sys.exit(1)
 
         # Modify configuration
+        result = True
         if self.args.config:
-            result = self.config():
+            result = self.config()
         elif self.args.calendar:
-            result = self.calendar()
+            result = self.cmdCalendar()
 
         # TODO: ...
 

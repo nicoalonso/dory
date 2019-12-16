@@ -1,12 +1,17 @@
 {
     "calendar": {
-        "user": "",
-        "password": "",
-        "event_name": ""
+        "type": "",
+        "google": {
+            "credentials": "credentials.json",
+            "event_name": ""
+        }
     },
-    "odoo": {
-        "endpoint": "",
-        "user": "",
-        "password": ""
+    "register": {
+        "type": "",
+        "odoo": {
+            "endpoint": "",
+            "user": "",
+            "password": ""
+        }
     }
 }
