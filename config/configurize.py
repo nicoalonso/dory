@@ -88,6 +88,24 @@ class Configurize:
 
         return aux.get(name, default)
 
+    def set(self, section, name, value):
+        if isinstance(section, str):
+            section = section.split('.')
+
+        if isinstance(section, list):
+            aux = self.config
+            for item in section:
+                sub = aux.get(item, None)
+                if sub == None:
+                    sub = {}
+                    aux[item] = sub
+                aux = sub
+            # Store value
+            aux[name] = value
+
+    def display(self):
+        print(json.dumps(self.config, indent=4))
+
     # Return a boolean
     def bool(self, section, name, default=False):
         return bool(self.get(section, name, default))

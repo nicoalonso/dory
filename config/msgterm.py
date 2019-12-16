@@ -1,5 +1,15 @@
 #!/usr/bin/python3
 # Show messages on the terminal
+# 
+# Options:
+#   type: TEXT | INFO
+#   label: +
+#   bold: False
+#   reverse: False
+#   hr: False
+#   paragraph: False
+#   nl: False
+#   
 
 from termcolor import colored, cprint
 
@@ -17,7 +27,7 @@ class MsgTerm:
     FATAL    = 7
     # Message colors
     COLORS   = ['grey', 'blue', 'white', 'green', 'yellow', 'cyan', 'red', 'magenta']
-    LABELS   = ['-', 'i', ' ', '+', 'w', '*', '!', '!!']
+    LABELS   = ['d', 'i', ' ', '+', 'w', '*', '!', '!!']
 
     # Verbose level, default: hide debug messages
     verbose_level = 1
@@ -30,6 +40,7 @@ class MsgTerm:
         self.reverse = False
         self.hr = False
         self.paragraph = False
+        self.nl = False  # new line
         self.msgs = []
 
         if isinstance(msg, list) or isinstance(msg, tuple):
@@ -85,7 +96,7 @@ class MsgTerm:
             else:
                 print(text)
 
-        if self.paragraph:
+        if self.paragraph or self.nl:
             print('')
 
     # Transform to string
