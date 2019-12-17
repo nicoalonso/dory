@@ -2,7 +2,6 @@
     "calendar": {
         "type": "",
         "google": {
-            "credentials": "credentials.json",
             "event_name": ""
         }
     },

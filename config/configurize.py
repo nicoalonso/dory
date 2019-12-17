@@ -75,7 +75,7 @@ class Configurize:
             self.getHomeFilePath()
 
         with self.filepath.open('w') as json_file:
-            json.dump(self.config, json_file, indent=4)
+            json.dump(self.config, json_file, indent=4, sort_keys=True)
 
     # Get value of property
     def get(self, section, name, default=None):
@@ -105,7 +105,7 @@ class Configurize:
             aux[name] = value
 
     def display(self):
-        print(json.dumps(self.config, indent=4))
+        MsgTerm.jsonPrint(self.config)
 
     # Return a boolean
     def bool(self, section, name, default=False):

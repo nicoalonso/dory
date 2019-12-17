@@ -37,10 +37,22 @@ class Dory:
 
     # Configure
     def config(self):
-        if self.args.config.lower() == 'list':
+        result = True
+        action = self.args.config.lower()
+        if action == 'help':
+            info = [
+                '[ Config ]',
+                '',
+                'list of commands:',
+                '',
+                ' - list:  List of configuration',
+                ' - help:  Show this help',
+                ' - section.name=value   : Set a value for a key'
+            ]
+            MsgTerm.help(info)
+        elif action == 'list':
             MsgTerm.info('Show config file:', par=True)
             self.cfg.display()
-            return True
         elif '=' in self.args.config:
             parts = self.args.config.split('=')
             if len(parts) == 2:
@@ -54,11 +66,17 @@ class Dory:
                 MsgTerm.success('Parameter updated { %s }' % parameter)
                 self.cfg.save()
                 MsgTerm.success('Config file updated')
-                return True
+                self.cfg.display()
+            else:
+                MsgTerm.error("[Config] Error: expected 'section.name=value'")
+                result = False
+        else:
+            MsgTerm.alert('[Config] Unknown action: %s' % self.args.config, nl=True)
+            MsgTerm.help('[Config] use the command { help } for more information', nl=True)
+            result = False
 
         # Show error
-        MsgTerm.fatal("Expected: 'section.name=value' or 'list'")
-        return False
+        return result
 
     # Get Calendar
     def getCalendar(self):
@@ -72,8 +90,29 @@ class Dory:
     def cmdCalendar(self):
         self.getCalendar()
 
-        if self.args.calendar.lower() == 'check':
+        result = True
+        action = self.args.calendar.lower()
+        if action == 'check':
             result = self.cal.check()
+        elif action == 'list':
+            result = self.cal.getListEvents()
+        elif action == 'debug':
+            result = self.cal.getListEvents( True )
+        elif action == 'help':
+            info = [
+                '[ Calendar ]',
+                '',
+                'list of commands:',
+                '',
+                ' - check: Check connection with google calendar',
+                ' - list:  Get list of events',
+                ' - help:  Show this help'
+            ]
+            MsgTerm.help(info)
+        else:
+            MsgTerm.alert('[Calendar] Unknown action: %s' % self.args.calendar, nl=True)
+            MsgTerm.help('[Calendar] use the command { help } for more information', nl=True)
+            result = False
 
         return result
 

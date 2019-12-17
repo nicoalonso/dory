@@ -11,6 +11,7 @@
 #   nl: False
 #   
 
+import json
 from termcolor import colored, cprint
 
 # Message in Terminal
@@ -25,9 +26,10 @@ class MsgTerm:
     ALERT    = 5
     ERROR    = 6
     FATAL    = 7
+    HELP     = 8
     # Message colors
-    COLORS   = ['grey', 'blue', 'white', 'green', 'yellow', 'cyan', 'red', 'magenta']
-    LABELS   = ['d', 'i', ' ', '+', 'w', '*', '!', '!!']
+    COLORS   = ['grey', 'blue', 'white', 'green', 'yellow', 'yellow', 'red', 'magenta', 'cyan']
+    LABELS   = ['d', 'i', ' ', '+', 'w', '*', '!', '!!', '?']
 
     # Verbose level, default: hide debug messages
     verbose_level = 1
@@ -63,8 +65,8 @@ class MsgTerm:
 
         if self.type < self.DEBUG:
             self.type = self.DEBUG
-        elif self.type > self.FATAL:
-            self.type = self.FATAL
+        elif self.type > self.HELP:
+            self.type = self.HELP
 
     # Print message on the terminal
     def show(self):
@@ -136,7 +138,8 @@ class MsgTerm:
     @staticmethod
     def info(msg, **kwargs):
         kwargs['type'] = MsgTerm.INFO
-        kwargs['bold'] = True
+        if not 'bold' in kwargs:
+            kwargs['bold'] = True
         if not ('label' in kwargs or 'lbl' in kwargs):
             kwargs['label'] = MsgTerm.LABELS[MsgTerm.INFO]
 
@@ -163,6 +166,7 @@ class MsgTerm:
     # show alert
     @staticmethod
     def alert(msg, **kwargs):
+        kwargs['bold'] = True
         kwargs['type'] = MsgTerm.ALERT
         if not ('label' in kwargs or 'lbl' in kwargs):
             kwargs['label'] = MsgTerm.LABELS[MsgTerm.ALERT]
@@ -201,6 +205,29 @@ class MsgTerm:
 
         MsgTerm(msg, **kwargs).show()
 
+    # show Help message
+    @staticmethod
+    def help(msg, **kwargs):
+        kwargs['type'] = MsgTerm.HELP
+        kwargs['bold'] = True
+
+        if isinstance(msg, tuple):
+            msg = list(msg)
+        if isinstance(msg, list):
+            msg.insert(0, '[ Help ]')
+        else:
+            msg = ['[ Help ]', msg]
+
+        if not ('label' in kwargs or 'lbl' in kwargs):
+            kwargs['label'] = MsgTerm.LABELS[MsgTerm.HELP]
+
+        MsgTerm(msg, **kwargs).show()
+
+    # Helper for print json objects
+    @staticmethod
+    def jsonPrint(obj):
+        cprint(json.dumps(obj, indent=4, sort_keys=True), 'cyan')
+        print('')
 
 # Text messages and colors
 if __name__ == '__main__':
@@ -214,6 +241,7 @@ if __name__ == '__main__':
     MsgTerm.alert('alert')
     MsgTerm.error('error')
     MsgTerm.fatal('fatal')
+    MsgTerm.help('help')
 
     # Printa a list of messages in paragraph style
     MsgTerm.message('Paragraph Style', label='#', bold=True, hr=True, type=MsgTerm.SUCCESS)
