@@ -137,7 +137,7 @@ class GoogleCalendar(CalendarBase):
     # 
     # @param  debug  - show the first event for debug
     # 
-    def getListEvents(self, debug=False):
+    def list(self, debug=False):
         events = self.getEvents()
 
         if not events:
@@ -151,7 +151,7 @@ class GoogleCalendar(CalendarBase):
         return True
 
     # Return today's event
-    def xgetTodayEvent(self):
+    def getTodayEvent(self):
         events = self.getEvents()
 
         if not events:

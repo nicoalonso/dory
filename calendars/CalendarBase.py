@@ -10,14 +10,14 @@ class CalendarBase:
 
     # Check connection to Calendar
     def check(self):
-        MsgTerm.alert('Check is not implemented', nl=True)
+        MsgTerm.error('Error: Check is not implemented', nl=True)
         return False
 
-    def getListEvents(self, debug=False):
-        MsgTerm.alert('List events is not implemented', nl=True)
+    def list(self, debug=False):
+        MsgTerm.error('Error: List events is not implemented', nl=True)
         return False
 
     # Return today's event
     def getTodayEvent(self):
-        MsgTerm.alert('Today event is not implemented', nl=True)
+        MsgTerm.error('Error: Today event is not implemented', nl=True)
         return False

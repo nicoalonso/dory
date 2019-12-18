@@ -211,12 +211,17 @@ class MsgTerm:
         kwargs['type'] = MsgTerm.HELP
         kwargs['bold'] = True
 
+        title = '[ Help ]'
+        if 'section' in kwargs:
+            title = '[ Help :: %s ]' % kwargs['section']
+
         if isinstance(msg, tuple):
             msg = list(msg)
         if isinstance(msg, list):
-            msg.insert(0, '[ Help ]')
+            msg.insert(0, title)
+            msg.insert(1, '')
         else:
-            msg = ['[ Help ]', msg]
+            msg = [title, '', msg]
 
         if not ('label' in kwargs or 'lbl' in kwargs):
             kwargs['label'] = MsgTerm.LABELS[MsgTerm.HELP]
