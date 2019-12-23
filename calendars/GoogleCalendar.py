@@ -1,4 +1,4 @@
-# Calendar from google
+#!/usr/bin/python3
 
 import pickle
 from datetime import datetime, date
@@ -11,20 +11,41 @@ from .CalendarBase import CalendarBase
 from .GoogleCalendarEvent import GoogleCalendarEvent
 from config import MsgTerm
 
+
+# SCOPES used for get google credentials
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
-# @see: https://developers.google.com/calendar/quickstart/python#notes
 
-# sync with google calendar
 class GoogleCalendar(CalendarBase):
+    '''GoogleCalendar
     
-    # Constructor
+    This class use the Google Calendar API for get the user events
+    
+    Extends:
+        CalendarBase
+
+    Attributes:
+        creds (Object): Store the credentials for google API
+        eventName (string): Event name for search in GoogleCalendar
+
+    More information:
+        @see: https://developers.google.com/calendar/quickstart/python#notes
+    '''
+    
     def __init__(self, config):
         CalendarBase.__init__(self, config)
         self.creds = None
 
-    # Get credentials
+
     def getCredentials(self):
+        '''Get Credentials from Google
+        
+        Use Google API for create a token and store in user home
+        
+        Returns:
+            Object -- Return the credentials, False if it's fails
+        '''
+        
         if self.creds:
             return self.creds
 
@@ -60,8 +81,16 @@ class GoogleCalendar(CalendarBase):
 
         return self.creds
 
-    # Check connection to Google Calendar
+
     def check(self):
+        '''Check
+        
+        Check connection to Google Calendar use the credentials
+        
+        Returns:
+            bool -- True if success
+        '''
+
         # Credentials
         self.getCredentials()
 
@@ -88,8 +117,16 @@ class GoogleCalendar(CalendarBase):
 
         return True
 
-    # Get Events from Google Calendar
+
     def getEvents(self):
+        '''Get Events
+        
+        Get events from Google Calendar
+        
+        Returns:
+            list or None -- List of GoogleCalendarEvent
+        '''
+
         self.eventName = self.cfg.get('calendar.google', 'event_name')
         if not self.eventName:
             MsgTerm.error('[Calendar] Error: calendar.google.event_name is not defined')
@@ -133,11 +170,19 @@ class GoogleCalendar(CalendarBase):
 
         return events
 
-    # Return the list of events
-    # 
-    # @param  debug  - show the first event for debug
-    # 
+
     def list(self, debug=False):
+        '''List
+        
+        Print to screen the user events list
+        
+        Keyword Arguments:
+            debug {bool} -- For development purposes (default: {False})
+        
+        Returns:
+            bool -- Command result
+        '''
+
         events = self.getEvents()
 
         if not events:
@@ -150,8 +195,16 @@ class GoogleCalendar(CalendarBase):
 
         return True
 
-    # Return today's event
+
     def getTodayEvent(self):
+        '''Get today's event
+        
+        Return today events
+        
+        Returns:
+            GoogleCalendarEvent or None
+        '''
+
         events = self.getEvents()
 
         if not events:

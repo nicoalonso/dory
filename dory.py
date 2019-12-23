@@ -12,19 +12,32 @@ from registers import getRegister
 # Version
 VERSION='v0.1'
 
-# App class
 class Dory:
-    # Wellcome
+    '''
+    Dory App
+    
+    Attributes:
+        args (ArgumentParser): Object to parse the user input
+        cfg  (Configurize)   : This object is used for get the user configuration
+        cal  (CalendarBase)  : Object for get the user calendar
+    '''
+
     def wellcome(self):
+        '''Show wellcome message'''
+
         msgs = ['', 'Dory %s' % VERSION, '', 'Wellcome to dory', 'The utility for people with fish memory', '']
         MsgTerm.success(msgs, par=True, label='#', bold=True)
 
-    # Goodbye
+
     def bye(self):
+        '''Show the goodbye message'''
+
         MsgTerm.info('See you, Bye!!', hr=True, nl=True, label='#')
 
-    # Parse arguments
+
     def arguments(self):
+        '''Parse input arguments'''
+
         parser = ArgumentParser()
         parser.add_argument('-v', '--verbose', action="store_true", help="Add more verbose to output")
         parser.add_argument('--config', help="Config command")
@@ -34,8 +47,17 @@ class Dory:
         parser.add_argument('-j', '--journal', action="store_true", help="Journal Mode")
         self.args = parser.parse_args()
 
-    # Configure
+
     def config(self):
+        '''Configure command
+        
+        Actions:
+            [ help ][ list ][ section.name=value ]
+        
+        Returns:
+            boolean -- Command result
+        '''
+
         result = True
         action = self.args.config.lower()
         if action == 'help':
@@ -72,11 +94,19 @@ class Dory:
             MsgTerm.help('use the command { help } for more information', section='Config', nl=True)
             result = False
 
-        # Show error
         return result
 
-    # Calendar
+
     def cmdCalendar(self):
+        '''Calendar command
+        
+        Actions:
+            [ help ][ check ][ list ][ debug ]
+        
+        Returns:
+            boolean -- Command result
+        '''
+
         self.cal = getCalendar(self.cfg)
 
         result = True
@@ -103,8 +133,16 @@ class Dory:
 
         return result
 
-    # Register
+
     def cmdRegister(self):
+        '''Register command
+        
+        Actions:
+            [ help ][ check ][ list ]
+        
+        Returns:
+            boolean -- Command result
+        '''
         result = True
         self.register = getRegister(self.cfg)
         action = self.args.register.lower()
@@ -130,8 +168,10 @@ class Dory:
 
         return result
 
-    # Execute application
+
     def run(self):
+        '''Execute application'''
+
         self.wellcome()
         # Parse arguments
         self.arguments()
@@ -158,11 +198,11 @@ class Dory:
         if not result:
             sys.exit(1)
 
-        # Despedida
+        # bye
         self.bye()
 
 
-# Execute
+# main
 if __name__ == '__main__':
     dory = Dory()
     dory.run()

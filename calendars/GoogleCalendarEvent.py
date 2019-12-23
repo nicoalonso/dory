@@ -7,8 +7,22 @@ from config import MsgTerm
 
 # Class Calendar Event
 class GoogleCalendarEvent:
+    '''Class Google Calendar Event
+    
+    Use this to parse and store the google calendar information
 
-    # Constructor
+    Args:
+        calEvent (dict): Google Calendar Event from API
+
+    Attributes:
+        calEvent (dict): Store a copy of Google Calendar Event
+        valid (bool): The event is valid. An event is valid when have start and end datetime
+        start (datetime): event start
+        end (datetime): event end
+        delta (timedelta): Used for calc event time
+        hours (int): Duration of the event
+    '''
+
     def __init__(self, calEvent):
         self.calEvent = calEvent
         self.valid = False
@@ -21,12 +35,16 @@ class GoogleCalendarEvent:
         self.parse()
 
 
-    # Check if is an event valid
-    # The event valid have datetime in start and end keys
-    # 
-    # @return boolean
-    # 
     def validate(self):
+        '''Validate
+        
+        Check if the event is valid
+        An event is valid when have start and end datetime
+        
+        Returns:
+            bool -- Returns if the event is valid
+        '''
+
         start = self.calEvent.get('start')
         end = self.calEvent.get('end')
         if start and end:
@@ -37,8 +55,13 @@ class GoogleCalendarEvent:
 
         return self.valid
 
-    # Parse event
+
     def parse(self):
+        '''Parse event
+        
+        Parse event and store the relevant information
+        '''
+
         if self.valid:
             self.start = parser.parse(self.calEvent['start']['dateTime'])
             self.end = parser.parse(self.calEvent['end']['dateTime'])
@@ -46,12 +69,25 @@ class GoogleCalendarEvent:
             self.hours = self.delta.seconds / 3600
             self.summary = self.calEvent['summary']
 
-    # Check if the day is today
+
     def isToday(self):
+        '''isToday
+        
+        Check if the event is today
+        '''
+
         return (date.today() == self.start.date())
 
-    # Print event in terminal
+
     def print(self, showToday=False):
+        '''Print event
+        
+        Print event on the terminal
+        
+        Args:
+            showToday {bool} -- highlight of today's event (default: {False})
+        '''
+
         bold = False
         asterisk = ''
         if showToday and self.isToday():
@@ -68,8 +104,10 @@ class GoogleCalendarEvent:
         )
         MsgTerm.info(msg, bold=bold, label='-')
 
-    # Debug
-    def debug(self):
-        MsgTerm.jsonPrint( self.calEvent )
 
-    
+    def debug(self):
+        '''Debug
+        
+        Use only development purposes
+        '''
+        MsgTerm.jsonPrint( self.calEvent )

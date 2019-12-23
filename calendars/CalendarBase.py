@@ -1,10 +1,18 @@
-# Base Class for Calendars
+#!/usr/bin/python3
 
 from config import MsgTerm
 
+
 class CalendarBase:
+    '''Calendar base class
     
-    # Constructor
+    Args:
+        config (Configurize): The config is used for get the user configuration
+
+    Attributes:
+        cfg    (Configurize): Configuration object
+    '''
+
     def __init__(self, config):
         self.cfg = config
 

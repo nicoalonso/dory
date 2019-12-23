@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# Project configuration
 
 import json
 from pathlib import Path
@@ -13,12 +12,22 @@ FOLDER_PROJECTS = '.nk'
 
 # Configurize class
 class Configurize:
+    '''Configurize class
+    
+    It is used for read and save the configuration from json file
 
-    # Constructor
-    # 
-    # @param  string   project      Project Name
-    # @param  string   filename     Config file name
-    # 
+    Args:
+        project (string): Project name
+        filename (string): Config file name (default:{'config'})
+
+    Attributes:
+        project (string): Project name
+        filename (string): Config file name (default:{'config.json'})
+        configFolder (string): User home config folder
+        filepath (string): Full config file path
+        config (dict): Configuration
+    '''
+
     def __init__(self, project, filename='config'):
         self.project = project
         self.filename = filename + '.json'
@@ -26,8 +35,13 @@ class Configurize:
         self.filepath = None
         self.config = {}
 
-    # Get the home config file path
+
     def getHomeFilePath(self):
+        '''get home file path
+        
+        Get the user home folder for read and store de config file
+        '''
+
         folder = Path.home() / FOLDER_PROJECTS;
         # Create folder if not exists
         if not folder.exists():
@@ -43,11 +57,16 @@ class Configurize:
         # Config file path
         self.filepath = self.configFolder / self.filename
 
-    # Load project config
-    # 
-    # @return Boolean
-    # 
+
     def load(self):
+        '''Load
+        
+        Load config from filepath
+        
+        Returns:
+            bool -- Load result
+        '''
+
         self.getHomeFilePath()
 
         # Check if config file exists
@@ -69,16 +88,34 @@ class Configurize:
 
         return True
 
-    # Save project config
+
     def save(self):
+        '''Save
+        
+        Store the configuration on file
+        '''
+
         if not self.filepath:
             self.getHomeFilePath()
 
         with self.filepath.open('w') as json_file:
             json.dump(self.config, json_file, indent=4, sort_keys=True)
 
-    # Get value of property
+
     def get(self, section, name, default=None):
+        '''Get value
+        
+        Get property value
+        
+        Args:
+            section {string}: Section on configuration file
+            name    {string}: key name
+            default {mixed} : default value (default: {None})
+        
+        Returns:
+            Mixed: Return the config value
+        '''
+
         parts = section.split('.')
         aux = self.config
         for item in parts:
@@ -89,7 +126,18 @@ class Configurize:
 
         return aux.get(name, default)
 
+
     def set(self, section, name, value):
+        '''Set value
+        
+        Set property value
+        
+        Arguments:
+            section {string}: Section on configuration file
+            name    {string}: property name
+            value   {mixed} : property value
+        '''
+
         if isinstance(section, str):
             section = section.split('.')
 
@@ -104,28 +152,97 @@ class Configurize:
             # Store value
             aux[name] = value
 
+
     def display(self):
+        '''Display configuration on the terminal'''
+
         MsgTerm.jsonPrint(self.config)
 
-    # Return a boolean
+
     def bool(self, section, name, default=False):
+        '''bool
+        
+        Get the property value as bool
+        
+        Args:
+            section {string}
+            name    {string}
+            default {bool} --  (default: {False})
+        
+        Returns:
+            bool
+        '''
+
         return bool(self.get(section, name, default))
 
-    # Return a integer
+
     def int(self, section, name, default=0):
+        '''int
+        
+        Get the property value as integer
+        
+        Args:
+            section {string}
+            name    {string}
+            default {int} --  (default: {0})
+        
+        Returns:
+            int
+        '''
+
         return int(self.get(section, name, default))
 
-    # Return a float value
+
     def float(self, section, name, default=0.0):
+        '''float
+        
+        Get the property value as float
+        
+        Args:
+            section {string}
+            name    {string}
+            default {float} --  (default: {0.0})
+        
+        Returns:
+            float
+        '''
+
         return float(self.get(section, name, default))
 
-    # Return a string
+
     def str(self, section, name, default=''):
+        '''string
+        
+        Get the property value as string
+        
+        Args:
+            section {string}
+            name    {string}
+            default {string} --  (default: {''})
+        
+        Returns:
+            string
+        '''
+
         return str(self.get(section, name, default))
 
-    # Return a list
+
     def list(self, section, name, default=[]):
+        '''list
+        
+        Get the property value as list
+        
+        Args:
+            section {string}
+            name    {string}
+            default {list} --  (default: [])
+        
+        Returns:
+            list
+        '''
+
         return list(self.get(section, name, default))
+
 
 # Test config file
 if __name__ == '__main__':
