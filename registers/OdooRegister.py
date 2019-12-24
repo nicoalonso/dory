@@ -1,4 +1,4 @@
-# Odoo register
+#!/usr/bin/python3
 
 import random
 import requests
@@ -8,9 +8,25 @@ from config import MsgTerm
 from utils import FormHtmlParser
 from .RegisterBase import RegisterBase
 
-# Odoo class register
+
 class OdooRegister(RegisterBase):
-    # Constructor
+    '''Odoo Register
+    
+    Use for connecto to Odoo register
+    
+    Extends:
+        RegisterBase
+
+    Args:
+        config (Configurize): user configuration
+
+    Attributes:
+        endpoint (string): odoo endpoint url
+        user (string): odoo user
+        password (string): odoo password
+        client (Session): requests client
+    '''
+
     def __init__(self, config):
         RegisterBase.__init__(self, config)
         self.endpoint = config.get('register.odoo', 'endpoint')
@@ -18,12 +34,38 @@ class OdooRegister(RegisterBase):
         self.password = config.get('register.odoo', 'password')
         self.client = requests.Session()
 
-    # Make URL
+
     def makeUrlCallKw(self, model, method):
+        '''Make URL
+        
+        Used for create the url to call
+        
+        Arguments:
+            model {string}: odoo model
+            method {string}: odoo model method
+        
+        Returns:
+            str: the url
+        '''
+
         return self.endpoint + '/web/dataset/call_kw/%s/%s' % (model, method)
 
-    # Make post data for json RPC 2.0
+
     def makePostData(self, model, method, args, kwargs={}):
+        '''make post data
+        
+        Used for create the JSON post data to send to Odoo
+        Odoo use JSON RPC 2.0 Protocol
+        
+        Arguments:
+            model {string}: Odoo model
+            method {string}: Odoo model method
+            args {dict}: arguments to pass Odoo
+        
+        Keyword Arguments:
+            kwargs {dict}: keywords to pass Odoo (default: {{}})
+        '''
+
         return {
             "id": random.randrange(99999999),
             "jsonrpc": "2.0",
@@ -36,16 +78,39 @@ class OdooRegister(RegisterBase):
             }
         }
 
-    # Check status code
+
     def checkStatusCode(self, response):
+        '''Check status code
+        
+        Check status code for response object
+        
+        Arguments:
+            response {Response}: response object
+        
+        Returns:
+            bool
+        '''
+
         MsgTerm.debug('Response code: %s' % response.status_code)
         check = (response.status_code >= 200 and response.status_code < 300)
         if not check:
             MsgTerm.warning('Response with error return code: %s' % response.status_code)
         return check
 
-    # Check content type
+
     def checkContentType(self, response, expected='application/json'):
+        '''Check content type
+        
+        Arguments:
+            response {Response}: requests responde object
+        
+        Keyword Arguments:
+            expected {str}: content type expected (default: {'application/json'})
+        
+        Returns:
+            bool
+        '''
+
         MsgTerm.debug('Response expected: %s' % expected)
         MsgTerm.debug('Response content-type: %s' % response.headers['content-type'])
         check = (expected in response.headers['content-type'])
@@ -53,27 +118,62 @@ class OdooRegister(RegisterBase):
             MsgTerm.warning('Response with wrong content type: %s => %s' % (expected, response.headers['content-type']))
         return check
 
-    # Verify Response
+
     def checkResponse(self, resp, contentTypeExpected='application/json'):
+        '''Verify response
+        
+        Check status code and content type of response
+        
+        Arguments:
+            resp {Response}: requests response object
+        
+        Keyword Arguments:
+            contentTypeExpected {str}: contenty type expected (default: {'application/json'})
+        
+        Returns:
+            bool
+        '''
+
         return self.checkStatusCode(resp) and self.checkContentType(resp, contentTypeExpected)
 
-    # Call method
+
     def call(self, model, method, args, kwargs={}):
+        '''Call method
+        
+        call to method of model and pass the arguments
+        
+        Arguments:
+            model {string}: Odoo model
+            method {string}: Odoo model method
+            args {dict}: Odoo arguments
+        
+        Keyword Arguments:
+            kwargs {dict}: Odoo keyword arguments (default: {{}})
+        '''
+
         url = self.makeUrlCallKw(model, method)
-        body = self.makePostData(model, method, args)
+        body = self.makePostData(model, method, args, kwargs)
+
         MsgTerm.debug('URL: %s' % url)
         if MsgTerm.verbose_level == 0:
             MsgTerm.debug('Request body')
             MsgTerm.jsonPrint(body)
 
-        # data=json.dumps(data),
         resp = self.client.post(url, json=body)
         ok = self.checkResponse(resp)
         
         return (ok, resp)
 
-    # Login to Odoo
+
     def login(self):
+        '''Odoo login
+        
+        Login to Odoo register
+        
+        Returns:
+            bool: Login result
+        '''
+
         # Get form page and catch csrf_token
         resp = self.client.get(self.endpoint)
 
@@ -118,8 +218,13 @@ class OdooRegister(RegisterBase):
         MsgTerm.debug('[Login] session_id: %s' % self.client.cookies.get('session_id'))
         return True
 
-    # Get Reasons
+
     def getReasons(self):
+        '''Get reasons
+        
+        Get reasons to register
+        '''
+
         model = 'hr.attendance'
         method = 'get_all_attendance_reasons'
         args = [[650]]
@@ -159,6 +264,12 @@ class OdooRegister(RegisterBase):
 
     # Check connection with register
     def check(self):
+        '''Check connection with the register
+        
+        Returns:
+            bool
+        '''
+
         if self.login():
             self.getReasons()
 

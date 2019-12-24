@@ -12,7 +12,7 @@ calendarTypes = {
     'default': CalendarBase
 }
 
-# Get calendar
+
 def getCalendar(cfg):
     '''get calendar
     
@@ -27,6 +27,7 @@ def getCalendar(cfg):
 
     typeCal = cfg.get('calendar', 'type', None)
     MsgTerm.debug('Calendar type: %s' % typeCal)
+    
     if typeCal in calendarTypes:
         targetClass = calendarTypes[ typeCal ]
         return targetClass(cfg)

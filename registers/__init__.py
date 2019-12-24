@@ -1,4 +1,4 @@
-# Package registers
+#!/usr/bin/python3
 
 from config import MsgTerm
 
@@ -12,10 +12,22 @@ registerTypes = {
     'simulate': SimulateRegister
 }
 
-# Get calendar
+
 def getRegister(cfg):
+    '''Get register
+    
+    Return the class instance of register defined by the user
+    
+    Arguments:
+        cfg {Configurize}: User configuration
+    
+    Returns:
+        RegisterBase: Instance inherit from RegisterBase
+    '''
+
     typeReg = cfg.get('register', 'type', None)
     MsgTerm.debug('Register type: %s' % typeReg)
+    
     if typeReg in registerTypes:
         targetClass = registerTypes[typeReg]
         return targetClass(cfg)

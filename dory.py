@@ -55,7 +55,7 @@ class Dory:
             [ help ][ list ][ section.name=value ]
         
         Returns:
-            boolean -- Command result
+            bool: Command result
         '''
 
         result = True
@@ -104,7 +104,7 @@ class Dory:
             [ help ][ check ][ list ][ debug ]
         
         Returns:
-            boolean -- Command result
+            bool: Command result
         '''
 
         self.cal = getCalendar(self.cfg)
@@ -141,7 +141,7 @@ class Dory:
             [ help ][ check ][ list ]
         
         Returns:
-            boolean -- Command result
+            bool: Command result
         '''
         result = True
         self.register = getRegister(self.cfg)
@@ -202,7 +202,7 @@ class Dory:
         self.bye()
 
 
-# main
 if __name__ == '__main__':
+    # main
     dory = Dory()
     dory.run()

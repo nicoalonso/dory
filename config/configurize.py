@@ -10,7 +10,6 @@ from . import MsgTerm
 FOLDER_PROJECTS = '.nk'
 
 
-# Configurize class
 class Configurize:
     '''Configurize class
     
@@ -64,7 +63,7 @@ class Configurize:
         Load config from filepath
         
         Returns:
-            bool -- Load result
+            bool: Load result
         '''
 
         self.getHomeFilePath()

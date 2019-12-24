@@ -1,23 +1,48 @@
 #!/usr/bin/python3
-# Show messages on the terminal
-# 
-# Options:
-#   type: TEXT | INFO
-#   label: +
-#   bold: False
-#   reverse: False
-#   hr: False
-#   paragraph: False
-#   nl: False
-#   
 
 import json
 from termcolor import colored, cprint
 
-# Message in Terminal
-class MsgTerm:
 
-    # Type messages constants
+class MsgTerm:
+    '''Show messages on the Terminal
+    
+    It is used for show information to the user
+    Depends on termcolor library
+    
+    Constants:
+        DEBUG   {0}: display debug messages
+        INFO    {1}: display information messages
+        TEXT    {2}: display test messages
+        SUCCESS {3}: display success messages
+        WARNING {4}: display warning messages
+        ALERT   {5}: display alert messages
+        ERROR   {6}: display error messages
+        FATAL   {7}: display fatal error messages
+        HELP    {8}: display help messages
+        COLORS  {list}: List of colors used for show the different messages
+        LABELS  {list}: List of labes to show the differentent messages
+
+    Static Attributes:
+        verbose_level {number}: verbose level, hide messages that the level is lower than message value
+                                (default: {1}) - hide debug messages
+
+    Args:
+        msg {str|list}: Message to show
+        kwargs {dict}: List of options, each option in the dict must exist as an attribute in the class
+
+    Attributes:
+        type {number}: type of message, must be one of constants defined on the class, example: INFO, (default: {TEXT})
+        label {string|None}: label to show before the message in the box, example: + >> [+], (default: {None})
+        bold {bool}: bold style, (default: {False})
+        reverse (bool): reverse style, (default: {False})
+        hr (bool): like as <HR> tag in html, print '---', (default: {False})
+        paragraph (bool): like as <P> tag in html, (defaul: {False})
+        nl (bool): New line, print new line after the message, (default: {False})
+        msgs (list): List of messages to display, each list item print in a single line
+    '''
+
+    # Constants
     DEBUG    = 0
     INFO     = 1
     TEXT     = 2
@@ -27,14 +52,13 @@ class MsgTerm:
     ERROR    = 6
     FATAL    = 7
     HELP     = 8
-    # Message colors
+    # Colors and Labels
     COLORS   = ['grey', 'blue', 'white', 'green', 'yellow', 'yellow', 'red', 'magenta', 'cyan']
     LABELS   = ['d', 'i', ' ', '+', 'w', '*', '!', '!!', '?']
 
-    # Verbose level, default: hide debug messages
+    # Verbose level
     verbose_level = 1
 
-    # Constructor
     def __init__(self, msg, **kwargs):
         self.type = self.TEXT
         self.label = None
@@ -42,7 +66,7 @@ class MsgTerm:
         self.reverse = False
         self.hr = False
         self.paragraph = False
-        self.nl = False  # new line
+        self.nl = False
         self.msgs = []
 
         if isinstance(msg, list) or isinstance(msg, tuple):
@@ -55,21 +79,24 @@ class MsgTerm:
         for key in kwargs:
             if hasattr(self, key):
                 setattr(self, key, kwargs[key])
-            else:
-                if key == 'par':
-                    self.paragraph = kwargs['par']
-                elif key == 'p':
-                    self.paragraph = kwargs['p']
+            else:  # alias
+                if key == 'par' or key == 'p':
+                    self.paragraph = kwargs[key]
                 elif key == 'lbl':
                     self.label = kwargs['lbl']
 
+        # Force that the type is of the allow types
         if self.type < self.DEBUG:
             self.type = self.DEBUG
         elif self.type > self.HELP:
             self.type = self.HELP
 
-    # Print message on the terminal
+
     def show(self):
+        '''Show message
+        
+        Print message on the terminal with the styles was defined
+        '''
         if self.type < self.verbose_level:
             return
 
@@ -101,42 +128,82 @@ class MsgTerm:
         if self.paragraph or self.nl:
             print('')
 
-    # Transform to string
+
     def __str__(self):
+        '''Transfrom to string
+        
+        Returns:
+            str
+        '''
+
         return ', '.join(self.msgs)
 
     # Static methods
-    
+
     @staticmethod
     def verbosity(level):
+        '''Set verbosity level
+        
+        Arguments:
+            level {number}: verbosity level
+        '''
+
         MsgTerm.verbose_level = level
 
-    # Generic
+
     @staticmethod
     def message(msg, **kwargs):
+        '''Show generic message
+        
+        Arguments:
+            msg {string|list}: Message or list of messages
+            **kwargs {dict}: List of message options
+        '''
+
         MsgTerm(msg, **kwargs).show()
 
-    # show text
+
     @staticmethod
     def text(msg, **kwargs):
+        '''Show text message
+        
+        Arguments:
+            msg {string|list}: Message or list of messages
+            **kwargs {dict}: List of message options
+        '''
+
         kwargs['type'] = MsgTerm.TEXT
         if not ('label' in kwargs or 'lbl' in kwargs):
             kwargs['label'] = MsgTerm.LABELS[MsgTerm.TEXT]
 
         MsgTerm(msg, **kwargs).show()
 
-    # Show debug
+
     @staticmethod
     def debug(msg, **kwargs):
+        '''Show debug message
+        
+        Arguments:
+            msg {string|list}: Message or list of messages
+            **kwargs {dict}: List of message options
+        '''
+
         kwargs['type'] = MsgTerm.DEBUG
         if not ('label' in kwargs or 'lbl' in kwargs):
             kwargs['label'] = MsgTerm.LABELS[MsgTerm.DEBUG]
 
         MsgTerm(msg, **kwargs).show()
 
-    # show information
+
     @staticmethod
     def info(msg, **kwargs):
+        '''Show info message
+        
+        Arguments:
+            msg {string|list}: Message or list of messages
+            **kwargs {dict}: List of message options
+        '''
+
         kwargs['type'] = MsgTerm.INFO
         if not 'bold' in kwargs:
             kwargs['bold'] = True
@@ -145,27 +212,48 @@ class MsgTerm:
 
         MsgTerm(msg, **kwargs).show()
 
-    # show success
+
     @staticmethod
     def success(msg, **kwargs):
+        '''Show success message
+        
+        Arguments:
+            msg {string|list}: Message or list of messages
+            **kwargs {dict}: List of message options
+        '''
+
         kwargs['type'] = MsgTerm.SUCCESS
         if not ('label' in kwargs or 'lbl' in kwargs):
             kwargs['label'] = MsgTerm.LABELS[MsgTerm.SUCCESS]
 
         MsgTerm(msg, **kwargs).show()
 
-    # show warning
+
     @staticmethod
     def warning(msg, **kwargs):
+        '''Show warning message
+        
+        Arguments:
+            msg {string|list}: Message or list of messages
+            **kwargs {dict}: List of message options
+        '''
+
         kwargs['type'] = MsgTerm.WARNING
         if not ('label' in kwargs or 'lbl' in kwargs):
             kwargs['label'] = MsgTerm.LABELS[MsgTerm.WARNING]
 
         MsgTerm(msg, **kwargs).show()
 
-    # show alert
+
     @staticmethod
     def alert(msg, **kwargs):
+        '''Show alert message
+        
+        Arguments:
+            msg {string|list}: Message or list of messages
+            **kwargs {dict}: List of message options
+        '''
+
         kwargs['bold'] = True
         kwargs['type'] = MsgTerm.ALERT
         if not ('label' in kwargs or 'lbl' in kwargs):
@@ -173,9 +261,16 @@ class MsgTerm:
 
         MsgTerm(msg, **kwargs).show()
 
-    # show error
+
     @staticmethod
     def error(msg, **kwargs):
+        '''Show error message
+        
+        Arguments:
+            msg {string|list}: Message or list of messages
+            **kwargs {dict}: List of message options
+        '''
+
         kwargs['type'] = MsgTerm.ERROR
         kwargs['bold'] = True
         if not ('label' in kwargs or 'lbl' in kwargs):
@@ -183,9 +278,16 @@ class MsgTerm:
 
         MsgTerm(msg, **kwargs).show()
 
-    # show Fatal Error
+
     @staticmethod
     def fatal(msg, **kwargs):
+        '''Show fatal error message
+        
+        Arguments:
+            msg {string|list}: Message or list of messages
+            **kwargs {dict}: List of message options
+        '''
+
         kwargs['type'] = MsgTerm.FATAL
         kwargs['bold'] = True
         kwargs['sep'] = True
@@ -205,9 +307,16 @@ class MsgTerm:
 
         MsgTerm(msg, **kwargs).show()
 
-    # show Help message
+
     @staticmethod
     def help(msg, **kwargs):
+        '''Show help message
+        
+        Arguments:
+            msg {string|list}: Message or list of messages
+            **kwargs {dict}: List of message options
+        '''
+
         kwargs['type'] = MsgTerm.HELP
         kwargs['bold'] = True
 
@@ -228,14 +337,21 @@ class MsgTerm:
 
         MsgTerm(msg, **kwargs).show()
 
-    # Helper for print json objects
+
     @staticmethod
     def jsonPrint(obj):
+        '''Helper for print JSON objects to terminal
+        
+        Arguments:
+            obj (dict): object to print
+        '''
+
         cprint(json.dumps(obj, indent=4, sort_keys=True), 'cyan')
         print('')
 
-# Text messages and colors
+
 if __name__ == '__main__':
+    # Test messages and colors
     MsgTerm.verbosity(MsgTerm.DEBUG)  # Set level of verbosity
     MsgTerm.message('Text messages')
     MsgTerm.debug('debug')
@@ -248,7 +364,7 @@ if __name__ == '__main__':
     MsgTerm.fatal('fatal')
     MsgTerm.help('help')
 
-    # Printa a list of messages in paragraph style
+    # Print a list of messages in paragraph style
     MsgTerm.message('Paragraph Style', label='#', bold=True, hr=True, type=MsgTerm.SUCCESS)
     msgs = ['This is a message', 'that to show in multiple lines', 'like as a paragraph style']
     MsgTerm.message(msgs, paragraph=True, label=' ', bold=True, type=MsgTerm.INFO)
