@@ -1,12 +1,13 @@
-### Tabla de Contenidos
+# Tabla de Contenidos
 
-[Resumen](#resumen)
-[Motivación](#motivación)
-[Get started](#get-started)
-    [1. Entorno virtual](#1-entorno-virtual)
-    [2. Instalar dependencias](#2-instalar-dependencias)
-    [3. Ejecutar dory](#3-ejecutar-dory)
-[Información para el desarrollador](#informacion-para-el-desarrollador)
+1. [Resumen](#resumen)
+2. [Motivación](#motivación)
+3. [Get started](#get-started)
+    1. [Entorno virtual](#1-entorno-virtual)
+    2. [Instalar dependencias](#2-instalar-dependencias)
+    3. [Ejecutar dory](#3-ejecutar-dory)
+4. [Información para el desarrollador](#información-para-el-desarrollador)
+
 
 
 # Resumen
