@@ -44,7 +44,7 @@ Esquema:
 
 #### 1. Entorno virtual
 
-Yo recomiendo que uses entornos virtuales en tus desarrollos. Si no quieres usarlo sáltate este paso.
+Recomiendo que uses entornos virtuales en tus desarrollos. Si no quieres usarlo sáltate este paso.
 
 Lo primer que deberías es crear el entorno virtual, para eso créalo con el comando:
 
@@ -52,7 +52,7 @@ Lo primer que deberías es crear el entorno virtual, para eso créalo con el com
 virtualenv ~/python-env/dory --python=python3
 ```
 
-Donde `python-env` es la carpeta donde almaceno mis entornos virtuales. Es una convención personal, puedes sustituir dicha carpeta por la que quieras usar. Recuerda crearla antes de crear el entorno virtual.
+Donde `python-env` es la carpeta donde almaceno mis entornos virtuales. Es una convención personal, puedes sustituir dicha carpeta por la que quieras usar. Recuerda crearla antes de ejecutar el comando.
 
 Con el modificador `--python` le estamos indicando que versión de `python` vamos a usar, en este caso `python3`.
 
@@ -74,7 +74,7 @@ Una vez que tenemos creado nuestro entorno virtual debemos activarlo:
 source ~/python-env/dory/bin/activate
 ```
 
-Comprobarás que estará activado porque el `prompt` del sistema cambiará y delante aparecerá el nombre del entorno virtual en nuestro caso "`(dory)`"
+Comprobarás que estará activado porque el `prompt` de la terminal cambiará y delante aparecerá el nombre del entorno virtual en nuestro caso "`(dory)`"
 
 Si quieres salir del entorno virtual sólo tienes que ejecutar:
 
@@ -158,3 +158,10 @@ coverage html
 ```
 
 Para visualizarlo en el navegador hay muchas formas, yo lo hago usando el `http-server` de `nodejs`, tienes aquí el  enlace a su **github**: [http-server](https://github.com/http-party/http-server)
+
+Método abreviado para ejecutar los tests y generar el coverage:
+
+```bash
+coverage run -m unitest && coverage html
+```
+

@@ -48,55 +48,6 @@ class Dory:
         self.args = parser.parse_args()
 
 
-    def config(self):
-        '''Configure command
-        
-        Actions:
-            [ help ][ list ][ section.name=value ]
-        
-        Returns:
-            bool: Command result
-        '''
-
-        result = True
-        action = self.args.config.lower()
-        if action == 'help':
-            info = [
-                'list of commands:',
-                '',
-                ' - list:  List of configuration',
-                ' - help:  Show this help',
-                ' - section.name=value   : Set a value for a key'
-            ]
-            MsgTerm.help(info, section='Config')
-        elif action == 'list':
-            MsgTerm.info('Show config file:', par=True)
-            self.cfg.display()
-        elif '=' in self.args.config:
-            parts = self.args.config.split('=')
-            if len(parts) == 2:
-                value = parts.pop()
-                parameter = parts.pop()
-                MsgTerm.debug('Update parameter [ %s ] with value "%s"' % (parameter, value))
-                section = parameter.split('.')
-                name = section.pop()
-
-                self.cfg.set(section, name, value)
-                MsgTerm.success('Parameter updated { %s }' % parameter)
-                self.cfg.save()
-                MsgTerm.success('Config file updated')
-                self.cfg.display()
-            else:
-                MsgTerm.error("[Config] Error: expected 'section.name=value'")
-                result = False
-        else:
-            MsgTerm.alert('[Config] Unknown action: %s' % self.args.config, nl=True)
-            MsgTerm.help('use the command { help } for more information', section='Config', nl=True)
-            result = False
-
-        return result
-
-
     def cmdCalendar(self):
         '''Calendar command
         
@@ -187,7 +138,7 @@ class Dory:
         # Execute commands
         result = True
         if self.args.config:
-            result = self.config()
+            result = self.cfg.command( self.args.config )
         elif self.args.calendar:
             result = self.cmdCalendar()
         elif self.args.register:
@@ -202,7 +153,7 @@ class Dory:
         self.bye()
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: no cover
     # main
     dory = Dory()
     dory.run()

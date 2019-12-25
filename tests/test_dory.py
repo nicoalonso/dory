@@ -8,7 +8,7 @@ from dory import Dory
 from msgterm import MsgTerm
 
 
-class TestDory(unittest.TestCase):
+class TestDory(TestCase):
     '''
     Dory Test
     
@@ -29,15 +29,15 @@ class TestDory(unittest.TestCase):
         # [ Then ]
         self.assertTrue( MsgTerm.success.called )
 
-    def test_wellcome2(self):
+    def test_bye(self):
         # [ Given ]
-        MsgTerm.success = Mock()
-        
+        MsgTerm.info = Mock()
+
         # [ When ]
-        # self.dory.wellcome()
+        self.dory.bye()
 
         # [ Then ]
-        self.assertFalse( MsgTerm.success.called )
+        self.assertTrue( MsgTerm.info.called )
 
 
 
