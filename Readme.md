@@ -1,3 +1,5 @@
+[TOC]
+
 # Resumen
 
 Tienes memoria de pez, esta es tu aplicación
@@ -5,10 +7,9 @@ Tienes memoria de pez, esta es tu aplicación
 Aun en desarrollo...
 
 
-
 ## Motivación
 
-Este proyecto nace como **prueba de concepto** después de una típica discusión de café. Todos nos olvidamos de ponernos en pausa de café o nos vamos los viernes sin finalizar la jornada laboral y nos llama recursos humanos al final de mes diciendo como es posible que llevamos más de 60 horas trabajadas. Y en esa discusión siempre salta uno que dice: "*por favor, que somos desarrolladores, esto lo podemos automatizar fácilmente*" (ese fui yo). Y después del oportuno desafió aquí esta el resultado.
+Este proyecto nace como **prueba de concepto** después de una típica discusión de café. Todos nos olvidamos de ponernos en pausa de café o nos vamos los viernes sin finalizar la jornada laboral y nos llama recursos humanos al final de mes diciendo como es posible que llevamos 60 horas trabajadas de más. Y en esa discusión siempre salta uno que dice: "*por favor, que somos desarrolladores, esto lo podemos automatizar fácilmente*" (ese fui yo). Y después del oportuno desafió aquí esta el resultado.
 
 
 
