@@ -4,7 +4,7 @@
 2. [Motivación](#motivación)
 3. [Get started](#get-started)
     1. [Entorno virtual](#1-entorno-virtual)
-    2. [Clonar repositorio](#3-clonar- repositorio)
+    2. [Clonar repositorio](#2-clonar- repositorio)
     3. [Instalar dependencias](#3-instalar-dependencias)
     4. [Ejecutar dory](#4-ejecutar-dory)
 4. [Desarrollo](#desarrollo)
@@ -158,4 +158,3 @@ coverage html
 ```
 
 Para visualizarlo en el navegador hay muchas formas, yo lo hago usando el `http-server` de `nodejs`, tienes aquí el  enlace a su **github**: [http-server](https://github.com/http-party/http-server)
-
