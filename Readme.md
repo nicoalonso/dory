@@ -14,13 +14,13 @@ Este proyecto nace como **prueba de concepto** después de una típica discusió
 
 ## Información
 
-Aunque este proyecto nace como prueba de concepto al avanzar en su desarrollo lo he diseñado para que fuese modular y así que fuese fácilmente escalable. 
+Aunque este proyecto nace como prueba de concepto al avanzar en su desarrollo lo he diseñado para que fuese modular y de ese modo se pudiese escalar fácilmente. 
 
-Existen tres módulos:
+He definido tres módulos:
 
 * **Calendario**: El calendario es donde se guarda el calendario laboral. Puede ser un archivo en formato json, una base de datos o google calendar. El calendario le facilita al motor información de cuando debe registrar las acciones. Por ejemplo yo uso google calendar, voy creando los eventos con la hora de inicio y fin de la jornada laboral. Si usas otro tipo de calendario por ejemplo el de Outlook, podrías crear tu propia clase y extenderla de `CalendarBase`. Y por último sólo tendrías que decirle a dory que use ese calendario modificando el parámetro de configuración `"calendar.type"`
-* **Registrador**: Es donde se registran las acciones, por ejemplo el inicio de la jornada, la pausa del café. También facilita información al motor para la toma de decisiones. Le informa del estado actual y de los registros que ya se han realizado. Lo mismo que el modulo de calendario se puede extender, por defecto existe el registrador para Odoo, que es el que uso yo, pero puedes añadir cualquiera. Extiende de la clase `RegisterBase` y modifica la variable `"register.type"`.
-* **Motor**: Es el encargado de la toma de decisiones, recupera información del calendario y el registrador y hace las llamadas al registrador en el momento indicado. Si encuentra algún tipo de discrepancia sale con error fatal.
+* **Registrador**: Es donde se registran las acciones, por ejemplo el inicio de la jornada, la pausa del café. También facilita información al motor para la toma de decisiones. Le informa del estado actual y de los registros que ya se han realizado. Lo mismo que el modulo de calendario se puede extender, por defecto existe el registrador para Odoo, que es el que se usa en mi organización, pero puedes añadir cualquiera. Extiende de la clase `RegisterBase` y modifica el parámetro `"register.type"`.
+* **Motor**: Es el encargado de la toma de decisiones, recupera información del calendario y el registrador y hace las llamadas al registrador en el momento indicado. Si encuentra algún tipo de discrepancia lanza un error fatal y finaliza la ejecución.
 
 Esquema:
 
@@ -28,21 +28,85 @@ Esquema:
 
 
 
+## Get started
 
+#### 1. Entorno virtual
 
+Yo recomiendo que uses entornos virtuales en tus desarrollos. Si no quieres usarlo sáltate este paso.
 
-
-## Dependencias
-
-* termcolor
-* google-api-python-client
-* google-auth-httplib2
-* google-auth-oauthlib
-* python-dateutil
-
-
+Lo primer que deberías es crear el entorno virtual para eso créalo con el comando:
 
 ```bash
-pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+virtualenv ~/python-env/dory --python=python3
+```
+
+Donde `python-env` es la carpeta donde almaceno mis entornos virtuales. Es una convención personal, puedes sustituir dicha carpeta por la que quieras usar. Recuerda crearla antes de crear el entorno virtual.
+
+Con el modificador `--python` le estamos indicando que versión de `python` vamos a usar, en este caso `python3`.
+
+Si no tienes instalado `virtualenv`, puedes instalarlo en `debian` con el siguiente comando:
+
+```bash
+sudo apt install virtualenv
+```
+
+También puedes instalarlo con `pip`:
+
+```bash
+sudo pip install virtualenv
+```
+
+Una vez que tenemos creado nuestro entorno virtual debemos activarlo:
+
+```bash
+source ~/python-env/dory/bin/activate
+```
+
+Comprobarás que estará activado porque el `prompt` del sistema cambiará y delante aparecerá el nombre del entorno virtual en nuestro caso "`(dory)`"
+
+Si quieres salir del entorno virtual sólo tienes que ejecutar:
+
+```bash
+deactivate
+```
+
+
+
+#### 2. Instalar dependencias
+
+Para instalar las dependencias del proyecto debes ejecutar el siguiente comando, sitúate en la carpeta del proyecto si no lo has hecho aun.
+
+```bash
+pip install -r requirements.txt
+```
+
+Recuerda tener activado el entorno virtual cuando hagas esto, para instalar las dependencias en el entorno virtual y no globalmente. Por otro lado, si no usas el entorno virtual entonces modifica el comando anterior por `pip3`, ya que el proyecto esta programado sobre `python3`.
+
+
+
+#### 3. Ejecutar dory
+
+Esta todo listo para ejecutar dory
+
+```bash
+python dory.py
+```
+
+Si no usas `virtualenv` ejecútalo así:
+
+```bash
+python3 dory.py
+```
+
+
+
+## Información para el desarrollador
+
+Eres libre para crear un **fork** del proyecto y extenderlo como quieras. Y si aparte quieres aportar mejoras a mi proyecto eres bienvenido.
+
+Si añades nuevas librerías para implementar diferentes APIs recuerda actualizar el fichero `requirements.txt`:
+
+```bash
+pip freeze > requirements.txt
 ```
 
