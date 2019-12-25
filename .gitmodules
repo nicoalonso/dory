@@ -1,3 +1,6 @@
 [submodule "msgterm.git"]
 	path = msgterm
 	url = git@github.com:nicoalonso/msgterm.git
+[submodule "configurize.git"]
+	path = configurize
+	url = git@github.com:nicoalonso/configurize.git
