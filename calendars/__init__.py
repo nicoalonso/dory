@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-from config import MsgTerm
+from msgterm import MsgTerm
 
 from .CalendarBase import CalendarBase
 from .GoogleCalendar import GoogleCalendar
