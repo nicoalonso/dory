@@ -3,9 +3,9 @@
 from datetime import datetime, date
 from dateutil import parser
 
-from config import MsgTerm
+from msgterm import MsgTerm
 
-# Class Calendar Event
+
 class GoogleCalendarEvent:
     '''Class Google Calendar Event
     

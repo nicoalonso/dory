@@ -9,7 +9,7 @@ from google.auth.transport.requests import Request
 
 from .CalendarBase import CalendarBase
 from .GoogleCalendarEvent import GoogleCalendarEvent
-from config import MsgTerm
+from msgterm import MsgTerm
 
 
 # SCOPES used for get google credentials

@@ -4,7 +4,7 @@ import random
 import requests
 from pprint import pprint
 
-from config import MsgTerm
+from msgterm import MsgTerm
 from utils import FormHtmlParser
 from .RegisterBase import RegisterBase
 

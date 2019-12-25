@@ -3,7 +3,7 @@
 import json
 from pathlib import Path
 
-from . import MsgTerm
+from msgterm import MsgTerm
 
 
 # Folder to contains projects config

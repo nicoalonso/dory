@@ -4,7 +4,7 @@
 import sys
 from argparse import ArgumentParser
 
-from config import MsgTerm
+from msgterm import MsgTerm
 from config import Configurize
 from calendars import getCalendar
 from registers import getRegister
