@@ -2,6 +2,8 @@
 
 Tienes memoria de pez, esta es tu aplicación
 
+En desarrollo...
+
 
 ## Dependencias
 
