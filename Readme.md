@@ -4,9 +4,10 @@
 2. [Motivación](#motivación)
 3. [Get started](#get-started)
     1. [Entorno virtual](#1-entorno-virtual)
-    2. [Instalar dependencias](#2-instalar-dependencias)
-    3. [Ejecutar dory](#3-ejecutar-dory)
-4. [Información para el desarrollador](#información-para-el-desarrollador)
+    2. [Clonar repositorio](#3-clonar- repositorio)
+    3. [Instalar dependencias](#3-instalar-dependencias)
+    4. [Ejecutar dory](#4-ejecutar-dory)
+4. [Desarrollo](#desarrollo)
 
 
 
@@ -45,7 +46,7 @@ Esquema:
 
 Yo recomiendo que uses entornos virtuales en tus desarrollos. Si no quieres usarlo sáltate este paso.
 
-Lo primer que deberías es crear el entorno virtual para eso créalo con el comando:
+Lo primer que deberías es crear el entorno virtual, para eso créalo con el comando:
 
 ```bash
 virtualenv ~/python-env/dory --python=python3
@@ -82,8 +83,18 @@ deactivate
 ```
 
 
+#### 2. Clonar repositorio
 
-#### 2. Instalar dependencias
+Este proyecto dispone de **módulos**, para clonar el proyecto debes hacerlo en modo **recursivo**.
+
+Ejemplo de comando para clonar el repositorio en la carpeta actual.
+
+```bash
+git clone --recursive git@github.com:nicoalonso/dory.git .
+```
+
+
+#### 3. Instalar dependencias
 
 Para instalar las dependencias del proyecto debes ejecutar el siguiente comando, sitúate en la carpeta del proyecto si no lo has hecho aun.
 
@@ -94,10 +105,9 @@ pip install -r requirements.txt
 Recuerda tener activado el entorno virtual cuando hagas esto, para instalar las dependencias en el entorno virtual y no globalmente. Por otro lado, si no usas el entorno virtual entonces modifica el comando anterior por `pip3`, ya que el proyecto esta programado sobre `python3`.
 
 
+#### 4. Ejecutar dory
 
-#### 3. Ejecutar dory
-
-Esta todo listo para ejecutar dory
+Esta todo listo para ejecutar dory:
 
 ```bash
 python dory.py
@@ -111,13 +121,41 @@ python3 dory.py
 
 
 
-## Información para el desarrollador
+## Desarrollo
 
-Eres libre para crear un **fork** del proyecto y extenderlo como quieras. Y si aparte quieres aportar mejoras a mi proyecto eres bienvenido.
+Eres libre para crear un **fork** del proyecto y extenderlo como quieras. Y si aparte quieres aportar mejoras a mi proyecto, eres bienvenido.
 
-Si añades nuevas librerías para implementar diferentes APIs recuerda actualizar el fichero `requirements.txt`:
+Si añades nuevas librerías para implementar diferentes APIs recuerda actualizar el fichero `requirements.txt`, puedes hacerlo de la siguiente manera:
 
 ```bash
 pip freeze > requirements.txt
 ```
+
+#### Ejecutar los tests unitarios
+
+Para ejecutar los tests unitarios utiliza el comando:
+
+```bash
+python -m unittest
+```
+
+Para generar el **coverage** usa el siguiente comando:
+
+```bash
+coverage run -m unittest
+```
+
+Con el siguiente comando obtienes un report:
+
+```
+coverage report -m
+```
+
+Y por último si quieres obtenerlo en html:
+
+```bash
+coverage html
+```
+
+Para visualizarlo en el navegador hay muchas formas, yo lo hago usando el `http-server` de `nodejs`, tienes aquí el  enlace a su **github**: [http-server](https://github.com/http-party/http-server)
 
