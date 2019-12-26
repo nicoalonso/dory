@@ -29,9 +29,9 @@ class OdooRegister(RegisterBase):
 
     def __init__(self, config):
         RegisterBase.__init__(self, config)
-        self.endpoint = config.get('register.odoo', 'endpoint')
-        self.user = config.get('register.odoo', 'user')
-        self.password = config.get('register.odoo', 'password')
+        self.endpoint = config.get('register.odoo.endpoint')
+        self.user = config.get('register.odoo.user')
+        self.password = config.get('register.odoo.password')
         self.client = requests.Session()
 
 

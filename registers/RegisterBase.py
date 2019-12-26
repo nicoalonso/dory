@@ -44,3 +44,39 @@ class RegisterBase:
 
         MsgTerm.error('Error: List is not implemented', nl=True)
         return False
+
+
+    def command(self, action):
+        '''Register command
+        
+        Args:
+            action {string}
+        
+        Returns:
+            bool: Command result
+        '''
+        result = True
+        action = action.lower()
+
+        if action == 'check':
+            result = self.check()
+
+        elif action == 'list':
+            result = self.list()
+
+        elif action == 'help':
+            info = [
+                'List of commands:',
+                '',
+                '  check: Check connection with register',
+                '  list : Get list of records',
+                '  help : Show this help'
+            ]
+            MsgTerm.help(info, section='Register')
+
+        else:
+            MsgTerm.alert('[Register] Unknown action: %s' % action, nl=True)
+            MsgTerm.help('use the command { help } for more information', section='Register', nl=True)
+            result = False
+
+        return result

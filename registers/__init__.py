@@ -25,7 +25,7 @@ def getRegister(cfg):
         RegisterBase: Instance inherit from RegisterBase
     '''
 
-    typeReg = cfg.get('register', 'type', None)
+    typeReg = cfg.get('register.type', None)
     MsgTerm.debug('Register type: %s' % typeReg)
     
     if typeReg in registerTypes:

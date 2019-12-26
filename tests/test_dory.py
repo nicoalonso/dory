@@ -2,7 +2,7 @@
 
 import unittest
 from unittest import TestCase
-from unittest.mock  import Mock
+from unittest.mock  import Mock, patch
 
 from dory import Dory
 from msgterm import MsgTerm
@@ -19,25 +19,23 @@ class TestDory(TestCase):
     def setUp(self):
         self.dory = Dory()
 
-    def test_wellcome(self):
-        # [ Given ]
-        MsgTerm.success = Mock()
 
+    @patch.object(MsgTerm, 'success')
+    def test_wellcome(self, _msgSuccess):
         # [ When ]
         self.dory.wellcome()
 
         # [ Then ]
-        self.assertTrue( MsgTerm.success.called )
+        self.assertTrue( _msgSuccess.called )
 
-    def test_bye(self):
-        # [ Given ]
-        MsgTerm.info = Mock()
 
+    @patch.object(MsgTerm, 'info')
+    def test_bye(self, _msgInfo):
         # [ When ]
         self.dory.bye()
 
         # [ Then ]
-        self.assertTrue( MsgTerm.info.called )
+        self.assertTrue( _msgInfo.called )
 
 
 

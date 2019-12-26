@@ -25,7 +25,7 @@ def getCalendar(cfg):
         CalendarBase: Instance inherit from CalendarBase
     '''
 
-    typeCal = cfg.get('calendar', 'type', None)
+    typeCal = cfg.get('calendar.type', None)
     MsgTerm.debug('Calendar type: %s' % typeCal)
     
     if typeCal in calendarTypes:

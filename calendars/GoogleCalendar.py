@@ -127,7 +127,7 @@ class GoogleCalendar(CalendarBase):
             list or None -- List of GoogleCalendarEvent
         '''
 
-        self.eventName = self.cfg.get('calendar.google', 'event_name')
+        self.eventName = self.cfg.get('calendar.google.event_name')
         if not self.eventName:
             MsgTerm.error('[Calendar] Error: calendar.google.event_name is not defined')
             info = [

@@ -14,7 +14,7 @@ VERSION='v0.1'
 
 class Dory:
     '''
-    Dory App
+    Dory Application
     
     Attributes:
         args (ArgumentParser): Object to parse the user input
@@ -37,7 +37,6 @@ class Dory:
 
     def arguments(self):
         '''Parse input arguments'''
-
         parser = ArgumentParser()
         parser.add_argument('-v', '--verbose', action="store_true", help="Add more verbose to output")
         parser.add_argument('--config', help="Config command")
@@ -48,80 +47,8 @@ class Dory:
         self.args = parser.parse_args()
 
 
-    def cmdCalendar(self):
-        '''Calendar command
-        
-        Actions:
-            [ help ][ check ][ list ][ debug ]
-        
-        Returns:
-            bool: Command result
-        '''
-
-        self.cal = getCalendar(self.cfg)
-
-        result = True
-        action = self.args.calendar.lower()
-        if action == 'check':
-            result = self.cal.check()
-        elif action == 'list':
-            result = self.cal.list()
-        elif action == 'debug':
-            result = self.cal.list( True )
-        elif action == 'help':
-            info = [
-                'list of commands:',
-                '',
-                ' - check: Check connection with calendar',
-                ' - list : Get list of events',
-                ' - help : Show this help'
-            ]
-            MsgTerm.help(info, section='Calendar')
-        else:
-            MsgTerm.alert('[Calendar] Unknown action: %s' % self.args.calendar, nl=True)
-            MsgTerm.help('use the command { help } for more information', section='Calendar', nl=True)
-            result = False
-
-        return result
-
-
-    def cmdRegister(self):
-        '''Register command
-        
-        Actions:
-            [ help ][ check ][ list ]
-        
-        Returns:
-            bool: Command result
-        '''
-        result = True
-        self.register = getRegister(self.cfg)
-        action = self.args.register.lower()
-
-        if action == 'check':
-            result = self.register.check()
-        elif action == 'list':
-            result = self.register.list()
-
-        elif action == 'help':
-            info = [
-                'List of commands:',
-                '',
-                ' - check: Check connection with register',
-                ' - list : Get list of records',
-                ' - help : Show this help'
-            ]
-            MsgTerm.help(info, section='Register')
-        else:
-            MsgTerm.alert('[Register] Unknown action: %s' % self.args.register, nl=True)
-            MsgTerm.help('use the command { help } for more information', section='Register', nl=True)
-            result = False
-
-        return result
-
-
     def run(self):
-        '''Execute application'''
+        '''Run application'''
 
         self.wellcome()
         # Parse arguments
@@ -139,10 +66,14 @@ class Dory:
         result = True
         if self.args.config:
             result = self.cfg.command( self.args.config )
+
         elif self.args.calendar:
-            result = self.cmdCalendar()
+            self.cal = getCalendar( self.cfg )
+            result = self.cal.command( self.args.calendar )
+
         elif self.args.register:
-            result = self.cmdRegister()
+            self.register = getRegister( self.cfg )
+            result = self.register.command( self.args.register )
 
         # TODO: ...
 
