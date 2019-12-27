@@ -17,6 +17,18 @@ class CalendarBase:
         self.cfg = config
 
 
+    def help(self):
+        '''Show help to the user'''
+        info = [
+            'list of commands:',
+            '',
+            '  check: Check connection with calendar',
+            '  list : Get list of events',
+            '  help : Show this help'
+        ]
+        MsgTerm.help(info, section='Calendar')
+
+
     def check(self):
         '''Check calendar connection
         
@@ -63,19 +75,16 @@ class CalendarBase:
         action = action.lower()
         if action == 'check':
             result = self.check()
+
         elif action == 'list':
             result = self.list()
+
         elif action == 'debug':
             result = self.list( True )
+
         elif action == 'help':
-            info = [
-                'list of commands:',
-                '',
-                ' - check: Check connection with calendar',
-                ' - list : Get list of events',
-                ' - help : Show this help'
-            ]
-            MsgTerm.help(info, section='Calendar')
+            self.help()
+            
         else:
             MsgTerm.alert('[Calendar] Unknown action: %s' % action, nl=True)
             MsgTerm.help('use the command { help } for more information', section='Calendar', nl=True)

@@ -17,6 +17,18 @@ class RegisterBase:
         self.cfg = config
 
 
+    def help(self):
+        '''Show help to the user'''
+        info = [
+            'List of commands:',
+            '',
+            '  check: Check connection with register',
+            '  list : Get list of records',
+            '  help : Show this help'
+        ]
+        MsgTerm.help(info, section='Register')
+
+
     def check(self):
         '''Check
         
@@ -26,7 +38,6 @@ class RegisterBase:
         Returns:
             bool: check result
         '''
-
         MsgTerm.error('Error: Check is not implemented', nl=True)
         return False
 
@@ -41,7 +52,6 @@ class RegisterBase:
         Returns:
             bool: list result
         '''
-
         MsgTerm.error('Error: List is not implemented', nl=True)
         return False
 
@@ -65,15 +75,7 @@ class RegisterBase:
             result = self.list()
 
         elif action == 'help':
-            info = [
-                'List of commands:',
-                '',
-                '  check: Check connection with register',
-                '  list : Get list of records',
-                '  help : Show this help'
-            ]
-            MsgTerm.help(info, section='Register')
-
+            self.help()
         else:
             MsgTerm.alert('[Register] Unknown action: %s' % action, nl=True)
             MsgTerm.help('use the command { help } for more information', section='Register', nl=True)

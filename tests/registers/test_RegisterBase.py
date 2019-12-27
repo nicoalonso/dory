@@ -6,12 +6,12 @@ from unittest.mock  import Mock, MagicMock, patch, create_autospec
 
 from msgterm import MsgTerm
 from configurize import Configurize
-from calendars import CalendarBase
+from registers import RegisterBase
 
 
-class TestCalendarBase(TestCase):
+class TestRegisterBase(TestCase):
     '''
-    Calendar Base Test
+    Register Base Test
     
     Extends:
         TestCase
@@ -19,13 +19,13 @@ class TestCalendarBase(TestCase):
 
     def setUp(self):
         self.cfg = Configurize('test')
-        self.cal = CalendarBase( self.cfg )
+        self.reg = RegisterBase( self.cfg )
 
 
     @patch.object(MsgTerm, 'error')
     def test_check(self, _msgError):
         # [ When ]
-        res = self.cal.check()
+        res = self.reg.check()
 
         # [ Then ]
         self.assertFalse( res )
@@ -35,17 +35,7 @@ class TestCalendarBase(TestCase):
     @patch.object(MsgTerm, 'error')
     def test_list(self, _msgError):
         # [ When ]
-        res = self.cal.list()
-
-        # [ Then ]
-        self.assertFalse( res )
-        self.assertTrue( _msgError.called )
-
-
-    @patch.object(MsgTerm, 'error')
-    def test_getTodayEvent(self, _msgError):
-        # [ When ]
-        res = self.cal.getTodayEvent()
+        res = self.reg.list()
 
         # [ Then ]
         self.assertFalse( res )
@@ -56,20 +46,18 @@ class TestCalendarBase(TestCase):
     @patch.object(MsgTerm, 'help')
     def test_command(self, _msgHelp, _msgAlert):
         # [ Given ]
-        self.cal.check = Mock()
-        self.cal.list = Mock()
+        self.reg.check = Mock()
+        self.reg.list = Mock()
 
         # [ When ]
-        self.cal.command('check')
-        self.cal.command('list')
-        self.cal.command('debug')
-        self.cal.command('help')
-        self.cal.command('dummy')
+        self.reg.command('check')
+        self.reg.command('list')
+        self.reg.command('help')
+        self.reg.command('dummy')
 
         # [ Then ]
-        self.assertTrue( self.cal.check.called )
-        self.assertTrue( self.cal.list.called )
-        self.assertEqual( 2, self.cal.list.call_count )
+        self.assertTrue( self.reg.check.called )
+        self.assertTrue( self.reg.list.called )
         self.assertTrue( MsgTerm.help.called )
         self.assertEqual( 2, MsgTerm.help.call_count )
         self.assertTrue( MsgTerm.alert.called )

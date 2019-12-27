@@ -85,24 +85,33 @@ deactivate
 
 #### 2. Clonar repositorio
 
-Este proyecto dispone de **módulos**, para clonar el proyecto debes hacerlo en modo **recursivo**.
+En este proyecto estoy usando los **módulos de git**, ya que tengo código re-utilizable en otros proyectos. 
 
-Ejemplo de comando para clonar el repositorio en la carpeta actual.
+Por este motivo a la hora de clonar el proyecto deberás hacerlo en modo **recursivo**.
+
+Ejemplo:
 
 ```bash
 git clone --recursive git@github.com:nicoalonso/dory.git .
 ```
 
 
+
 #### 3. Instalar dependencias
 
-Para instalar las dependencias del proyecto debes ejecutar el siguiente comando, sitúate en la carpeta del proyecto si no lo has hecho aun.
+Sitúate en la carpeta del proyecto, recuerda tener el entrono virtual activado si no quieres instalar las dependencias de modo global. Y ejecuta el siguiente comando:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Recuerda tener activado el entorno virtual cuando hagas esto, para instalar las dependencias en el entorno virtual y no globalmente. Por otro lado, si no usas el entorno virtual entonces modifica el comando anterior por `pip3`, ya que el proyecto esta programado sobre `python3`.
+En caso de que no desees usar el entorno virtual, ejecútalo de este modo:
+
+```bash
+pip3 install -r requirements.txt
+```
+
+
 
 
 #### 4. Ejecutar dory
