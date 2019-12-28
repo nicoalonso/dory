@@ -85,7 +85,7 @@ class GoogleCalendarEvent:
         Print event on the terminal
         
         Args:
-            showToday {bool} -- highlight of today's event (default: {False})
+            showToday {bool}: highlight of today's event (default: {False})
         '''
 
         bold = False

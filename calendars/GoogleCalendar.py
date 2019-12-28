@@ -37,7 +37,7 @@ class GoogleCalendar(CalendarBase):
         self.creds = None
 
 
-    def getCredentials(self):
+    def getCredentials(self):  # pragma: no cover
         '''Get Credentials from Google
         
         Use Google API for create a token and store in user home
